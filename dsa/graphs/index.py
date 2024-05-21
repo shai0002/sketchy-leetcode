@@ -42,6 +42,34 @@ def dfs(grid):
             stack.append((r - 1, c, visited.copy()))
     return count
 
+
+def dfs_shortest_path(grid):
+    rows, cols = len(grid), len(grid[0])
+    stack = [(0, 0, set(), 0)]  # Stack to store (row, col, visited, path_length) tuples
+    shortest_path = float('inf')
+
+    while stack:
+        r, c, visited, path_length = stack.pop()
+        if (r, c) in visited or grid[r][c] == 1:
+            continue
+        if r == rows - 1 and c == cols - 1:
+            shortest_path = min(shortest_path, path_length)
+            continue
+
+        visited.add((r, c))
+        if c + 1 < cols:
+            stack.append((r, c + 1, visited.copy(), path_length + 1))
+        if c - 1 >= 0:
+            stack.append((r, c - 1, visited.copy(), path_length + 1))
+        if r + 1 < rows:
+            stack.append((r + 1, c, visited.copy(), path_length + 1))
+        if r - 1 >= 0:
+            stack.append((r - 1, c, visited.copy(), path_length + 1))
+
+    return shortest_path
+
+print(dfs_shortest_path(grid))
+
 print(dfs(grid))
 
 def bfs(grid):
